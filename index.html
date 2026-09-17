@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>EVG Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ========================================
+   RESET & CSS VARIABLES
+   ======================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #F5F4F0;
+    --surface: #FFFFFF;
+    --surface2: #EEEDEA;
+    --border: rgba(0, 0, 0, 0.09);
+    --border-mid: rgba(0, 0, 0, 0.16);
+    --text: #1A1916;
+    --muted: #6B6A66;
+    --faint: #A09F9C;
+    --accent: #1B5E3B;
+    --radius: 14px;
+}
+
+/* ========================================
+   BODY & TYPOGRAPHY
+   ======================================== */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+header {
+    background: var(--surface);
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.header-link:visited,
+.header-link:hover,
+.header-link:active,
+.header-link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.hdr-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.hdr-sub {
+    margin-top: 3px;
+    font-size: 11px;
+    color: var(--faint);
+}
+
+/* ========================================
+   MAIN CONTENT & LAYOUT
+   ======================================== */
+main {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 600px) {
+    main {
+        max-width: 600px;
+        margin: auto;
+        padding: 16px 14px;
+    }
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    overflow: hidden;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 18px;
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    font: 14px 'DM Sans', sans-serif;
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    outline: none;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.2s ease;
+}
+
+input::placeholder {
+    color: var(--faint);
+}
+
+input:focus {
+    border-color: var(--accent);
+}
+
+input.error {
+    border-color: #B33A3A;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px 14px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: #FFFFFF;
+    font: 600 14px 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.92;
+}
+
+button:active {
+    opacity: 0.88;
+}
+
+/* ========================================
+   WELCOME SECTION (Returning Volunteer)
+   ======================================== */
+.welcome-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+/* ========================================
+   PORTAL NAVIGATION CARDS
+   ======================================== */
+.portal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.portal-card {
+    display: block;
+    padding: 14px;
+    color: inherit;
+    text-decoration: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+@media (hover: hover) {
+    .portal-card:hover {
+        border-color: var(--accent);
+        background: #F2F6F3;
+    }
+}
+
+@media (hover: none) {
+    .portal-card:active {
+        background: #E5EDE7;
+        transform: scale(0.99);
+    }
+}
+
+.portal-title {
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.portal-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* ========================================
+   CHANGE NAME LINK
+   ======================================== */
+.change-name {
+    width: max-content;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.change-name:hover {
+    color: var(--accent);
+}
+
+/* ========================================
+   UTILITY: HIDDEN CLASS
+   ======================================== */
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========================================
+     HEADER: Portal Title & Subtitle
+     ======================================== -->
+<header>
+    <a href="index.html" class="header-link">
+        <div class="hdr-title">EVG Portal</div>
+        <div class="hdr-sub">Education Volunteer Guide</div>
+    </a>
+</header>
+
+<!-- ========================================
+     MAIN CONTENT: Card Container
+     ======================================== -->
+<main>
+    <div class="card">
+
+        <!-- ========================================
+             SECTION 1: New Volunteer (Initial Entry)
+             Collects volunteer name for first time
+             ======================================== -->
+        <section id="newVolunteer">
+            <h2 id="introTitle">Welcome</h2>
+            <p id="introText">Your name is saved on this device so you do not need to enter it every time you book.</p>
+
+            <label for="volunteerName">Your first name</label>
+            <input
+                id="volunteerName"
+                type="text"
+                maxlength="40"
+                autocomplete="given-name"
+                placeholder="Enter your first or known name">
+
+            <button id="continueButton">Continue</button>
+        </section>
+
+        <!-- ========================================
+             SECTION 2: Returning Volunteer (Portal Access)
+             Shows saved name and navigation options
+             ======================================== -->
+        <section id="returningVolunteer" class="hidden">
+            <div class="welcome-name">Welcome <span id="savedName"></span></div>
+            <p id="welcomeLine">Use the options below to access volunteer services.</p>
+
+            <!-- Portal Navigation Cards -->
+            <div class="portal-actions">
+                <a class="portal-card" href="grg_index.html">
+                    <div class="portal-title">GRG</div>
+                    <div class="portal-text">Book GRG volunteer duties</div>
+                </a>
+
+                <a class="portal-card" href="cg_index.html">
+                    <div class="portal-title">Courses &amp; Guidings</div>
+                    <div class="portal-text">Book courses and guidings</div>
+                </a>
+
+                <a class="portal-card" href="evg_grg_dashboard.html">
+                    <div class="portal-title">GRG Status</div>
+                    <div class="portal-text">View GRG bookings status approved/pending</div>
+                </a>
+
+                <a class="portal-card" href="evg_cg_dashboard.html">
+                    <div class="portal-title">C&G Status</div>
+                    <div class="portal-text">View Course and Guidings bookings status</div>
+                </a>
+
+<!--                <a class="portal-card" href="evg_notes/index.html">-->
+<!--                    <div class="portal-title">Create notes &amp; stories</div>-->
+<!--                    <div class="portal-text">Create observations, ideas and experiences</div>-->
+<!--                </a>-->
+
+<!--                <a class="portal-card" href="evg_notes_viewer/index.html">-->
+<!--                    <div class="portal-title">View notes &amp; stories</div>-->
+<!--                    <div class="portal-text">View observations, ideas and experiences</div>-->
+<!--                </a>-->
+
+<!--                <a class="portal-card" href="noticeboard/index.html">-->
+<!--                    <div class="portal-title">Noticeboard</div>-->
+<!--                    <div class="portal-text">News, updates and announcements</div>-->
+<!--                </a>-->
+            </div>
+
+            <!-- Change Name Link -->
+            <div class="change-name" id="changeName">Use a different name</div>
+        </section>
+
+    </div>
+</main>
+
+<!-- ========================================
+     SCRIPTS: Shared utility and page logic
+     ======================================== -->
+<script src="../scripts/evg_id_shared.js"></script>
+
+<script>
+/* ========================================
+   STATE MANAGEMENT
+   DOM elements and local state
+   ======================================== */
+document.addEventListener("DOMContentLoaded", function () {
+    const newVolunteer = document.getElementById("newVolunteer");
+    const returningVolunteer = document.getElementById("returningVolunteer");
+    const savedName = document.getElementById("savedName");
+    const volunteerName = document.getElementById("volunteerName");
+    const continueButton = document.getElementById("continueButton");
+    const changeName = document.getElementById("changeName");
+
+    /* ========================================
+       UTILITY: Show/Hide Functions
+       Toggle between new and returning views
+       ======================================== */
+    function showFirst() {
+        newVolunteer.classList.remove("hidden");
+        returningVolunteer.classList.add("hidden");
+    }
+
+    function showReturn(name) {
+        newVolunteer.classList.add("hidden");
+        returningVolunteer.classList.remove("hidden");
+        savedName.textContent = name;
+    }
+
+    /* ========================================
+       HANDLER: Save Name
+       Validates input and saves to localStorage
+       ======================================== */
+    function save() {
+        const name = volunteerName.value.trim();
+
+        if (!name) {
+            volunteerName.classList.add("error");
+            volunteerName.focus();
+            return;
+        }
+
+        volunteerName.classList.remove("error");
+        localStorage.setItem("evg_name", name);
+        showReturn(name);
+    }
+
+    /* ========================================
+       HANDLER: Change Name
+       Clears current name and allows new entry
+       ======================================== */
+    function change() {
+        returningVolunteer.classList.add("hidden");
+        newVolunteer.classList.remove("hidden");
+        volunteerName.value = evgGetName();
+    }
+
+    /* ========================================
+       INITIALIZATION: Load State
+       Checks localStorage for saved name
+       Shows appropriate section on page load
+       ======================================== */
+    function load() {
+        ensureDeviceIdentity();
+        const name = evgGetName();
+
+        if (name) {
+            showReturn(name);
+        } else {
+            showFirst();
+        }
+    }
+
+    /* ========================================
+       EVENT LISTENERS
+       Attach handlers to buttons and inputs
+       ======================================== */
+    continueButton.addEventListener("click", save);
+    changeName.addEventListener("click", change);
+
+    volunteerName.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") save();
+    });
+
+    /* ========================================
+       PAGE LOAD
+       Trigger initialization on DOM ready
+       ======================================== */
+    load();
+});
+</script>
+
+</body>
+</html>
