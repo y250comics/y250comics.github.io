@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>GRG Volunteer Duty Booking</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="grg_style.css">
+    <link rel="stylesheet" href="loading_messages.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="hdr-row">
+      <div>
+        <a href="../index.html" class="header-link">
+          <div class="hdr-title" id="hdrTitle">Book GRG Duties</div>
+          <div class="hdr-valid" id="hdrValid">Loading...</div>
+        </a>
+      </div>
+      <div class="badge" id="badge">0 slots</div>
+    </div>
+
+    <div class="hdr-fields">
+      <div class="field-row">
+        <label for="monthSelect">Month</label>
+        <select id="monthSelect" class="month-select"></select>
+      </div>
+      <div class="field-row">
+        <label for="volName">Name</label>
+        <input id="volName" class="name-input" type="text"
+               placeholder="Enter your name..." maxlength="50" autocomplete="name" />
+      </div>
+    </div>
+  </header>
+
+  <div id="appBody"></div>
+
+  <div class="bottom-bar" id="bottomBar">
+    <div class="comment-wrap collapsed" id="commentWrap">
+      <div class="comment-toggle" id="commentToggle">
+        <span>Comment (optional)</span>
+        <span class="comment-arrow" id="commentArrow">&#9662;</span>
+      </div>
+      <textarea id="volComment" class="comment-input" placeholder="Any notes for the coordinator..."></textarea>
+    </div>
+    <div class="bar-btns">
+      <button class="btn-clear" id="clearBtn">Clear all</button>
+      <button class="btn-send"  id="sendBtn">Review &amp; Send &#8594;</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span id="toastLabel">Slot removed</span>
+    <button class="toast-undo" id="toastUndo">Undo</button>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Your Booking Message</div>
+      <div class="modal-sub">Tap WhatsApp to send your booking to the coordinator.</div>
+      <div class="msg-box" id="msgBox"></div>
+      <div class="copy-fb" id="copyFb"></div>
+      <div class="modal-btns">
+        <button class="mbtn mbtn-close" id="closeModal">&#10005;</button>
+        <button class="mbtn mbtn-copy"  id="copyBtn">Copy</button>
+        <a class="mbtn mbtn-wa" id="waBtn" href="#" target="_blank">WhatsApp &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load telemetry module first, then booking script -->
+  <script src="grg_telemetry.js"></script>
+  <script src="grg_script.js"></script>
+
+</body>
+</html>
