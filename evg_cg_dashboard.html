@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>EVG Approved C & G Bookings</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* ========================================
+   RESET & CSS VARIABLES
+   ======================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #F5F4F0;
+    --surface: #FFFFFF;
+    --border: rgba(0,0,0,.09);
+    --text: #1A1916;
+    --muted: #6B6A66;
+    --faint: #A09F9C;
+    --accent: #1B5E3B;
+
+    --approved: #F5FBF0;
+    --approved-border: #639922;
+
+    --course-bg: #FAF3FB;
+    --course-text: #0D3D6B;
+    --course-border: #4A90D9;
+    --course-card-bg: #F5FAFF;
+
+    --guiding-bg: #FAF3DE;
+    --guiding-text: #27500A;
+    --guiding-border: #639922;
+    --guiding-card-bg: #F5FBF0;
+
+    --pending: #FFF4E5;
+    --pending-border: #E39A32;
+    --pending-text: #9A5B00;
+
+}
+
+
+/* ========================================
+   BODY & TYPOGRAPHY
+   ======================================== */
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 40px;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+header {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.header-link:visited,
+.header-link:hover,
+.header-link:active,
+.header-link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.hdr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.hdr-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.hdr-valid {
+    margin-top: 3px;
+    font-size: 11px;
+    color: var(--faint);
+}
+
+.hdr-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+
+/* ========================================
+   BADGE & BUTTONS
+   ======================================== */
+
+.badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+}
+
+.filter-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.filter-btn:hover {
+    opacity: 0.9;
+}
+
+.filter-btn.active {
+    background: var(--accent);
+}
+
+.filter-btn:not(.active) {
+    background: var(--accent);
+    /*opacity: 0.6;*/
+    opacity: 1;
+}
+
+
+.status-toggle {
+    display: flex;
+    gap: 2px;
+    background: #E8E7E2;
+    padding: 2px;
+    border-radius: 999px;
+}
+
+.status-btn {
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.status-btn.active {
+    background: var(--accent);
+    color: #fff;
+}
+
+
+
+/* ========================================
+   BOOKING LIST CONTAINER
+   ======================================== */
+
+.list {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+/* ========================================
+   BOOKING CARD
+   ======================================== */
+
+.booking-card {
+    background: var(--approved);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--approved-border);
+}
+
+.booking-card.course {
+    background: var(--course-card-bg);
+    border-color: rgba(74, 144, 217, 0.2);
+}
+
+.booking-card.guiding {
+    background: var(--guiding-card-bg);
+    border-color: rgba(99, 153, 34, 0.2);
+}
+
+.booking-card.pending {
+    background: var(--pending);
+    border-color: var(--pending-border);
+}
+
+.booking-card.hidden {
+    display: none;
+}
+
+
+
+/* ========================================
+   CARD HEADER
+   ======================================== */
+
+.card-header {
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border);
+}
+
+.card-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.card-time {
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.card-header-right {
+    display: flex;
+    gap: 6px;
+}
+
+
+/* ========================================
+   CARD TAGS
+   ======================================== */
+
+.tag {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    padding-top: 4px;
+}
+
+
+.tag.pending {
+    background: var(--pending-border);
+    color: #fff;
+    padding-top: 4px;
+}
+
+
+.type-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.type-tag.course {
+    background: var(--course-bg);
+    color: var(--course-text);
+    border: 1px solid var(--course-border);
+}
+
+.type-tag.guiding {
+    background: var(--guiding-bg);
+    color: var(--guiding-text);
+    border: 1px solid var(--guiding-border);
+}
+
+
+/* ========================================
+   CARD BODY
+   ======================================== */
+
+.card-body {
+    padding: 12px 14px;
+}
+
+.name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detail {
+    margin-top: 5px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.comment {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+}
+
+
+/* ========================================
+   STATE MESSAGES
+   ======================================== */
+
+.state {
+    padding: 80px 24px;
+    text-align: center;
+}
+
+.state-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.state-sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+
+/* ========================================
+   LOADING SPINNER
+   ======================================== */
+
+.loading {
+    min-height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.loading::after {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+    border: 2px solid #D8D6D0;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+</style>
+</head>
+
+
+<!---------------------------------------------------------------------------------------------->
+
+<body>
+
+<!-- ========================================
+     HEADER: Title, Booking Count, Filter Button
+     ======================================== -->
+<header>
+    <div class="hdr-row">
+        <div>
+            <a href="index.html" class="header-link">
+                <div class="hdr-title">EVG C&G Booked</div>
+                <div class="hdr-valid">Approved by EDU</div>
+            </a>
+        </div>
+
+        <div class="hdr-controls">
+
+            <div class="status-toggle">
+                <button class="status-btn active" id="approvedBtn">
+                    A
+                </button>
+
+                <button class="status-btn" id="pendingBtn">
+                    P
+                </button>
+            </div>
+
+            <button class="filter-btn" id="sortBtn" title="Sort by date">
+                📅
+            </button>
+<!--            <button class="filter-btn active" id="filterBtn" style="display: none;">-->
+<!--                Duties-->
+<!--            </button>-->
+            <div class="badge" id="count">0 🎟️</div>
+        </div>
+    </div>
+</header>
+
+<!-- ========================================
+     BOOKING LIST: Populated by JavaScript
+     ======================================== -->
+<div class="list" id="bookingList">
+    <div class="loading">Loading bookings</div>
+</div>
+
+<script>
+/* ========================================
+   CONFIGURATION
+   Deployment ID and API endpoint
+   ======================================== */
+// const GAS_DEPLOYMENT_ID = "AKfycbzb1cZzvxcO5Pat3glYrcp5XGJ1XZtsmpQEP7jprlYFgWVVIphDodpdy_FFjDWHC-PWrg";
+const GAS_DEPLOYMENT_ID = "AKfycbwzE0QoZlyAycz4hkGvogyk0VadIslegka2nkaZrQDucvNCejHI6bm8W2rubjDkOEWaTA";
+
+const GAS_URL = `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
+
+/* ========================================
+   STATE MANAGEMENT
+   Track filter state, all bookings, and sort order
+   ======================================== */
+
+let allBookings = [];
+// let filterByName = false;
+let sortOrder = "asc"; // "asc" or "desc"
+let approvalFilter = "approved";
+
+const userName = localStorage.getItem("evg_name") || null;
+
+/* ========================================
+   UTILITY: Safe String Conversion
+   Handles null values and whitespace
+   ======================================== */
+function safeString(value) {
+    if (value === null || value === undefined || value === "") return "";
+    return String(value).trim();
+}
+
+/* ========================================
+   UTILITY: Format Date
+   Converts date string (YYYY-MM-DD) to ZA locale format (DD MMM YYYY)
+   ======================================== */
+function formatDate(value) {
+    if (!value) return '';
+
+    // Try to parse as YYYY-MM-DD string or Date object
+    let d;
+    if (typeof value === 'string') {
+        // If it's a string like "2026-09-22", parse it
+        d = new Date(value + 'T00:00:00Z');
+    } else {
+        d = new Date(value);
+    }
+
+    if (isNaN(d.getTime())) {
+        return safeString(value);
+    }
+
+    return d.toLocaleDateString('en-ZA', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'Africa/Johannesburg'
+    });
+}
+
+/* ========================================
+   UTILITY: Render Booking Cards
+   Takes booking data and returns HTML
+   ======================================== */
+
+function renderBookings(bookings) {
+    return bookings.map(b => {
+
+        const type = safeString(b.type).toLowerCase(); // "guiding" or "course"
+        const typeDisplay = type === "guiding" ? "Guiding" : "Course";
+        const gradeStr = safeString(b.grade);
+        const timeStr = safeString(b.time);
+        const dayStr = safeString(b.day);
+
+        const isApproved =
+            b.approved === "1" ||
+            b.approved === 1 ||
+            b.approved === true;
+
+        const statusText = isApproved
+            ? "Approved"
+            : "Pending";
+
+        const statusClass = isApproved
+            ? ""
+            : " pending";
+
+        return `
+
+        <div class="booking-card ${type}" data-name="${safeString(b.name)}">
+
+            <div class="card-header">
+
+                <div>
+                    <div class="card-date">${formatDate(b.date)}</div>
+                    <div class="card-time">${timeStr} · ${dayStr}</div>
+                </div>
+
+                <div class="card-header-right">
+                    <span class="tag${statusClass}">${statusText}</span>
+                    <span class="type-tag ${type}">${typeDisplay}</span>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <div class="name">${safeString(b.name)}</div>
+                <div class="detail">${safeString(b.school)} ${gradeStr ? " · Grade " + gradeStr : ""}</div>
+                <div class="detail">
+                    ${safeString(b.typeDetail)}
+                </div>
+                ${b.comment ? `<div class="comment">${safeString(b.comment)}</div>` : ""}
+            </div>
+        </div>
+    `;
+    }).join("");
+}
+
+/* ========================================
+   UTILITY: Update Display
+   Filters, sorts, and renders bookings based on state
+   ======================================== */
+//
+// function updateDisplay() {
+//
+//     const container =
+//         document.getElementById("bookingList");
+//
+//     let bookingsToDisplay = allBookings;
+//
+//
+//     // My Duties is now the default/only view
+//     if (userName) {
+//
+//         bookingsToDisplay =
+//             allBookings.filter(
+//                 b => b.name === userName
+//             );
+//
+//     }
+//
+//
+//     // No bookings for this person
+//     if (bookingsToDisplay.length === 0) {
+//
+//         container.innerHTML = `
+//
+//             <div class="state">
+//
+//                 <div class="state-title">
+//                     ${
+//                         userName
+//                             ? "No bookings found for you"
+//                             : "No approved bookings found"
+//                     }
+//                 </div>
+//
+//                 <div class="state-sub">
+//                     ${
+//                         userName
+//                             ? "You have no approved bookings at this time."
+//                             : "Approved courses and guidings will appear here."
+//                     }
+//                 </div>
+//
+//             </div>
+//
+//         `;
+//
+//         updateCount();
+//
+//         return;
+//     }
+//
+//
+//     // Sort
+//     const sorted =
+//         [...bookingsToDisplay].sort(
+//             (a, b) => {
+//
+//                 const dateA = a.date || "";
+//                 const dateB = b.date || "";
+//
+//                 const cmp =
+//                     dateA.localeCompare(dateB);
+//
+//                 return sortOrder === "asc"
+//                     ? cmp
+//                     : -cmp;
+//
+//             }
+//         );
+//
+//
+//     container.innerHTML =
+//         renderBookings(sorted);
+//
+//     updateCount();
+// }
+
+
+function updateDisplay() {
+
+    const container =
+        document.getElementById("bookingList");
+
+    /*
+     * Start with ALL data returned by GAS.
+     */
+    let bookingsToDisplay = allBookings;
+
+
+    /*
+     * First: show only this volunteer's bookings.
+     */
+    if (userName) {
+
+        bookingsToDisplay =
+            bookingsToDisplay.filter(
+                b => safeString(b.name) === userName
+            );
+
+    }
+
+
+    /*
+     * Second: filter by Approved / Pending.
+     *
+     * Approved:
+     *     approved = "1"
+     *
+     * Pending:
+     *     approved = ""
+     */
+    if (approvalFilter === "approved") {
+
+        bookingsToDisplay =
+            bookingsToDisplay.filter(
+                b =>
+                    b.approved === "1" ||
+                    b.approved === 1 ||
+                    b.approved === true
+            );
+
+    } else {
+
+        bookingsToDisplay =
+            bookingsToDisplay.filter(
+                b => safeString(b.approved) === ""
+            );
+
+    }
+
+
+    /*
+     * Nothing to display.
+     */
+    if (bookingsToDisplay.length === 0) {
+
+        const statusText =
+            approvalFilter === "approved"
+                ? "approved"
+                : "pending";
+
+        container.innerHTML = `
+
+            <div class="state">
+
+                <div class="state-title">
+                    ${
+                        userName
+                            ? `No ${statusText} bookings found`
+                            : `No ${statusText} bookings found`
+                    }
+                </div>
+
+                <div class="state-sub">
+                    ${
+                        approvalFilter === "approved"
+                            ? "Your approved courses and guidings will appear here."
+                            : "Bookings awaiting approval will appear here."
+                    }
+                </div>
+
+            </div>
+
+        `;
+
+        updateCount();
+
+        return;
+    }
+
+
+    /*
+     * Sort by date.
+     */
+    const sorted =
+        [...bookingsToDisplay].sort(
+            (a, b) => {
+
+                const dateA = a.date || "";
+                const dateB = b.date || "";
+
+                const cmp =
+                    dateA.localeCompare(dateB);
+
+                return sortOrder === "asc"
+                    ? cmp
+                    : -cmp;
+
+            }
+        );
+
+
+    container.innerHTML =
+        renderBookings(sorted);
+
+    updateCount();
+}
+
+
+//
+// function updateDisplay() {
+//     const container = document.getElementById("bookingList");
+//
+//     let bookingsToDisplay = allBookings;
+//
+//     if (filterByName && userName) {
+//         // Filter to only matching names
+//         bookingsToDisplay = allBookings.filter(b => b.name === userName);
+//
+//         if (bookingsToDisplay.length === 0) {
+//             container.innerHTML = `
+//                 <div class="state">
+//                     <div class="state-title">No bookings found for you</div>
+//                     <div class="state-sub">You have no approved bookings at this time.</div>
+//                 </div>`;
+//             return;
+//         }
+//     } else {
+//         // Show all bookings
+//         if (bookingsToDisplay.length === 0) {
+//             container.innerHTML = `
+//                 <div class="state">
+//                     <div class="state-title">No approved bookings found</div>
+//                     <div class="state-sub">Approved courses and guidings will appear here.</div>
+//                 </div>`;
+//             return;
+//         }
+//     }
+//
+//     // Apply sort (dates come as YYYY-MM-DD strings from GAS, which sort correctly as strings)
+//     const sorted = [...bookingsToDisplay].sort((a, b) => {
+//         const dateA = a.date || '';
+//         const dateB = b.date || '';
+//         const cmp = dateA.localeCompare(dateB);
+//         return sortOrder === "asc" ? cmp : -cmp;
+//     });
+//
+//     container.innerHTML = renderBookings(sorted);
+//     updateCount();
+// }
+
+/* ========================================
+   UTILITY: Update Booking Count
+   Updates badge and filter button visibility
+   ======================================== */
+function updateCount() {
+    const displayedCards = document.querySelectorAll('.booking-card');
+    const count = displayedCards.length;
+
+    document.getElementById("count").textContent =
+        // count + " booking" + (count === 1 ? "" : "s");
+        count + " 🎟️";
+}
+
+/* ========================================
+   SORT BUTTON EVENT LISTENER
+   Cycle through sort orders: asc → desc → asc
+   ======================================== */
+
+const sortBtn = document.getElementById("sortBtn");
+    sortBtn.addEventListener("click", () => {
+    sortOrder = sortOrder === "asc" ? "desc" : "asc";
+    sortBtn.textContent = sortOrder === "asc" ? "↑" : "↓";
+    updateDisplay();
+});
+
+
+/* ========================================
+   APPROVED BUTTON EVENT LISTENER
+   Cycle through Approved Pending
+   ======================================== */
+
+const approvedBtn =
+    document.getElementById("approvedBtn");
+
+const pendingBtn =
+    document.getElementById("pendingBtn");
+
+approvedBtn.addEventListener("click", () => {
+    approvalFilter = "approved";
+    approvedBtn.classList.add("active");
+    pendingBtn.classList.remove("active");
+    updateDisplay();
+});
+
+pendingBtn.addEventListener("click", () => {
+    approvalFilter = "pending";
+    pendingBtn.classList.add("active");
+    approvedBtn.classList.remove("active");
+    updateDisplay();
+});
+
+
+/* ========================================
+   FILTER BUTTON EVENT LISTENER
+   Toggle between all and filtered view
+   ======================================== */
+// if (userName) {
+//     const filterBtn = document.getElementById("filterBtn");
+//     filterBtn.style.display = "block";
+//
+//     filterBtn.addEventListener("click", () => {
+//         filterByName = !filterByName;
+//         filterBtn.classList.toggle("active");
+//         updateDisplay();
+//     });
+// }
+
+/* ========================================
+   FETCH & LOAD BOOKINGS
+   Calls GAS endpoint and populates page
+   ======================================== */
+function loadApproved() {
+    const container = document.getElementById("bookingList");
+    const startTime = performance.now();
+    const startTimestamp = new Date().toISOString();
+
+    fetch(GAS_URL + "?action=cgapprovals")
+        .then(response => {
+            const duration = Math.round(performance.now() - startTime);
+
+            // Log performance metrics to localStorage
+            localStorage.setItem(
+                "evg_dashboard_cg_deployment_call_duration",
+                JSON.stringify({
+                    start: startTimestamp,
+                    end: new Date().toISOString(),
+                    duration_ms: duration
+                })
+            );
+
+            console.log("CG GAS deployment call duration:", duration + "ms");
+
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status);
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            // Store and filter approved bookings (approved column is "" or "1")
+            allBookings = (data.approvals || [])
+                // .filter(b => b.approved === '1' || b.approved === 1 || b.approved === true)
+                .map(b => ({
+                    ...b,
+                    // All fields already come as strings from GAS, just ensure they're safe
+                    name: safeString(b.name),
+                    date: safeString(b.date),
+                    day: safeString(b.day),
+                    school: safeString(b.school),
+                    grade: safeString(b.grade),
+                    type: safeString(b.type),
+                    typeDetail: safeString(b.typeDetail),
+                    time: safeString(b.time),
+                    comment: safeString(b.comment)
+                }));
+
+            if (!allBookings.length) {
+                container.innerHTML = `
+                    <div class="state">
+                        <div class="state-title">No approved bookings found</div>
+                        <div class="state-sub">Approved courses and guidings will appear here.</div>
+                    </div>`;
+                return;
+            }
+
+            // Initial display (uses current sortOrder which defaults to "asc")
+            updateDisplay();
+        })
+        .catch(err => {
+            const duration = Math.round(performance.now() - startTime);
+
+            localStorage.setItem(
+                "evg_dashboard_cg_deployment_call_duration",
+                JSON.stringify({
+                    start: startTimestamp,
+                    end: new Date().toISOString(),
+                    duration_ms: duration,
+                    error: err.message
+                })
+            );
+
+            container.innerHTML = `
+                <div class="state">
+                    <div class="state-title">Unable to load approvals</div>
+                    <div class="state-sub">${err.message}</div>
+                </div>`;
+        });
+}
+
+// Initialize on page load
+loadApproved();
+</script>
+
+</body>
+</html>
