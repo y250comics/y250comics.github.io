@@ -560,7 +560,8 @@ function buildMessage(name) {
     selectedEvents.forEach(function(ev) {
         lines.push(
             '📅 ' + ev.dateFmt + ' — ' + ev.time +
-            ' | ' + ev.typeDetail
+            ' | ' + ev.typeDetail +
+            ' | ' + ev.school
         );
     });
 
