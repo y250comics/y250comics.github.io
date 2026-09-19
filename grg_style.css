@@ -567,6 +567,39 @@ header {
 
 
 /* ════════════════════════════════════════════════════════════════════════════
+   BOTTOM BAR SHORT DUTY
+   Short Duty button
+   ════════════════════════════════════════════════════════════════════════════ */
+
+.short-duty-wrap {
+  display: none;
+  padding: 8px 16px 0;
+  background: var(--surface);
+}
+
+.short-duty-wrap.show {
+  display: block;
+}
+
+.short-duty-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.short-duty-label input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════════
    BUTTONS
    Primary send and clear buttons
    ════════════════════════════════════════════════════════════════════════════ */
