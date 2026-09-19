@@ -8,6 +8,17 @@ const GAS_DEPLOYMENT_ID =
 const APPS_SCRIPT_URL =
   `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
 
+
+// ════════════════════════════════════════════════════════════════════════════
+// API CONFIGURATION
+// ════════════════════════════════════════════════════════════════════════════
+
+const GAS_DEPLOYMENT_ID =
+  "AKfycbz-vj7FoO24w22zVPoWczaR-4tmcHJcRGgS6hIxnFaxHkkCWOzG870apNPawsvnZp7q";
+
+const APPS_SCRIPT_URL =
+  `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
+
 // ════════════════════════════════════════════════════════════════════════════
 // CONSTANTS
 // ════════════════════════════════════════════════════════════════════════════
@@ -57,10 +68,24 @@ var masterData = {};
 var selections = {};
 var lastAction = null;
 var toastTimer = null;
+var shortDuty = false;
+
 var currentMonthTab = '';
 var currentMonthLabel = '';
 var currentYear = 0;
 var currentMonthIdx = 0;
+
+
+// shortDuty = false;
+//
+// var shortDutyCheckbox =
+//   document.getElementById('shortDuty');
+//
+// if (shortDutyCheckbox) {
+//   shortDutyCheckbox.checked = false;
+// }
+
+
 
 // ════════════════════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -660,6 +685,40 @@ function refreshCard(dateStr) {
   }
 }
 
+function updateShortDutyControl() {
+
+  var wrap =
+    document.getElementById('shortDutyWrap');
+
+  var checkbox =
+    document.getElementById('shortDuty');
+
+  var total =
+    Object.values(selections).reduce(
+      function (a, b) {
+        return a + b.length;
+      },
+      0
+    );
+
+  if (!wrap || !checkbox) {
+    return;
+  }
+
+  if (total > 0) {
+
+    wrap.classList.add('show');
+
+  } else {
+
+    wrap.classList.remove('show');
+
+    checkbox.checked = false;
+    shortDuty = false;
+  }
+}
+
+
 function updateBadge() {
 
   var total =
@@ -691,6 +750,8 @@ function updateBadge() {
       total > 0
     );
   }
+
+  updateShortDutyControl();
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -736,6 +797,22 @@ if (clearBtn) {
     }
   );
 }
+
+var shortDutyCheckbox =
+  document.getElementById('shortDuty');
+
+if (shortDutyCheckbox) {
+
+  shortDutyCheckbox.addEventListener(
+    'change',
+    function () {
+
+      shortDuty =
+        this.checked;
+    }
+  );
+}
+
 
 // ════════════════════════════════════════════════════════════════════════════
 // TOAST
@@ -1037,15 +1114,33 @@ function submitToSheet(name) {
     document.getElementById('volComment')
       .value.trim();
 
+  // var bookings =
+  //   entries.map(function (en) {
+  //
+  //     return {
+  //       date: en.dateRaw,
+  //       day: en.dayFull,
+  //       slot: SLOT_LABELS[en.key]
+  //     };
+  //   });
+
   var bookings =
     entries.map(function (en) {
 
-      return {
+      var booking = {
         date: en.dateRaw,
         day: en.dayFull,
         slot: SLOT_LABELS[en.key]
       };
+
+      if (shortDuty) {
+        booking.isShort = true;
+      }
+
+      return booking;
     });
+
+
 
   // Save a copy on this device
   saveLocalBooking(
