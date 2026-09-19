@@ -8,17 +8,6 @@ const GAS_DEPLOYMENT_ID =
 const APPS_SCRIPT_URL =
   `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
 
-
-// ════════════════════════════════════════════════════════════════════════════
-// API CONFIGURATION
-// ════════════════════════════════════════════════════════════════════════════
-
-const GAS_DEPLOYMENT_ID =
-  "AKfycbz-vj7FoO24w22zVPoWczaR-4tmcHJcRGgS6hIxnFaxHkkCWOzG870apNPawsvnZp7q";
-
-const APPS_SCRIPT_URL =
-  `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
-
 // ════════════════════════════════════════════════════════════════════════════
 // CONSTANTS
 // ════════════════════════════════════════════════════════════════════════════
