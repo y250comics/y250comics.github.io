@@ -270,6 +270,14 @@ header {
     border: 1px solid var(--grg-border);
 }
 
+.type-tag.short {
+    /*background: #F1EFE8;*/
+    background: #c4f5c8;
+    color: #6B6A66;
+    /*border: 1px solid #D8D5CC;*/
+    border: 1px solid var(--grg-border);
+}
+
 
 /* ========================================
    CARD BODY
@@ -407,7 +415,7 @@ header {
 
             <div class="badge" id="count">
 <!--                0 bookings-->
-                0 🎟️
+                0 🎫
             </div>
 
         </div>
@@ -437,7 +445,8 @@ header {
    ======================================== */
 
 const GAS_DEPLOYMENT_ID =
-    "AKfycbxQpeRmvBcWK-Vupw6SYrP4i-b31RdN3Df6IPvWJ7eXFWyUFcmuc3ZwOMVcSkdwnCVYEQ";
+    // "AKfycbz-vj7FoO24w22zVPoWczaR-4tmcHJcRGgS6hIxnFaxHkkCWOzG870apNPawsvnZp7q";  //randomnewnamthatwontwork i think
+    "AKfycbxQpeRmvBcWK-Vupw6SYrP4i-b31RdN3Df6IPvWJ7eXFWyUFcmuc3ZwOMVcSkdwnCVYEQ";    //Y250
 
 const GAS_URL =
     `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
@@ -577,10 +586,15 @@ function renderBookings(bookings) {
                         GRG
                     </span>
 
+                    ${
+                        b.isShort
+                            ? `<span class="type-tag short">Short</span>`
+                            : ""
+                    }
+
                 </div>
 
             </div>
-
 
             <div class="card-body">
 
@@ -759,7 +773,7 @@ function updateCount() {
     document.getElementById(
         "count"
     ).textContent =
-        count + " 🎟️";
+        count + " 🎫️";
 
 }
 
@@ -967,7 +981,12 @@ function loadApproved() {
                         safeString(b.comment),
 
                     approved:
-                        safeString(b.approved)
+                        safeString(b.approved),
+
+                    isShort:
+                        b.isShort === true ||
+                        b.isShort === 1 ||
+                        b.isShort === "1"
 
                 }));
 
