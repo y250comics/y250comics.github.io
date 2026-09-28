@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
+
+<title>EVG GRG Staff</title>
+
+
+<link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+>
+
+
+<style>
+
+/* ========================================
+   RESET & CSS VARIABLES
+   ======================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+
+    --bg: #F5F4F0;
+
+    --surface: #FFFFFF;
+
+    --border: rgba(0,0,0,.09);
+
+    --text: #1A1916;
+
+    --muted: #6B6A66;
+
+    --faint: #A09F9C;
+
+    --accent: #1B5E3B;
+
+
+    --action-bg: #FFF4E5;
+
+    --action-border: #E39A32;
+
+    --action-text: #7A4300;
+
+
+    --sheet-bg: #EAF3DE;
+
+    --sheet-text: #27500A;
+
+    --sheet-border: #639922;
+
+
+    --slot-bg: #EEF1F5;
+
+    --slot-border: #B8BEC7;
+
+    --slot-text: #30353B;
+
+
+    --radius: 14px;
+
+}
+
+
+/* ========================================
+   BODY
+   ======================================== */
+
+body {
+
+    font-family: 'DM Sans', sans-serif;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    min-height: 100vh;
+
+    padding-bottom: 40px;
+
+    -webkit-font-smoothing: antialiased;
+
+}
+
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+header {
+
+    background: #fff;
+
+    border-bottom: 1px solid var(--border);
+
+    padding: 14px 18px 12px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 10;
+
+}
+
+
+.hdr-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+}
+
+
+.hdr-title {
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+
+.hdr-valid {
+
+    margin-top: 3px;
+
+    font-size: 11px;
+
+    color: var(--faint);
+
+}
+
+
+.hdr-controls {
+
+    display: flex;
+
+    gap: 8px;
+
+    align-items: center;
+
+}
+
+
+/* ========================================
+   BADGE
+   ======================================== */
+
+.badge {
+
+    background: var(--accent);
+
+    color: #fff;
+
+    padding: 4px 10px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-family: 'DM Mono', monospace;
+
+    white-space: nowrap;
+
+}
+
+
+/* ========================================
+   REFRESH BUTTON
+   ======================================== */
+
+.refresh-btn {
+
+    background: var(--accent);
+
+    color: #fff;
+
+    border: none;
+
+    padding: 4px 11px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-family: 'DM Sans', sans-serif;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+}
+
+
+.refresh-btn:hover {
+
+    opacity: .9;
+
+}
+
+
+/* ========================================
+   LIST
+   ======================================== */
+
+.list {
+
+    padding: 12px 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+/* ========================================
+   INSTRUCTION CARD
+   ======================================== */
+
+.instruction-card {
+
+    background: var(--surface);
+
+    border: 1px solid var(--action-border);
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+}
+
+
+/* ========================================
+   CARD HEADER
+   ======================================== */
+
+.card-header {
+
+    padding: 10px 14px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    border-bottom: 1px solid var(--border);
+
+    background: var(--action-bg);
+
+}
+
+
+.card-date {
+
+    font-family: 'DM Mono', monospace;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+}
+
+
+.card-time {
+
+    margin-top: 3px;
+
+    font-size: 12px;
+
+    color: var(--muted);
+
+}
+
+
+.card-header-right {
+
+    display: flex;
+
+    gap: 6px;
+
+    align-items: center;
+
+}
+
+
+.tag {
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    background: var(--action-border);
+
+    color: #fff;
+
+    padding: 3px 8px;
+
+    border-radius: 999px;
+
+    white-space: nowrap;
+
+    letter-spacing: .04em;
+
+}
+
+
+.type-tag {
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    padding: 3px 8px;
+
+    border-radius: 999px;
+
+    white-space: nowrap;
+
+    background: var(--sheet-bg);
+
+    color: var(--sheet-text);
+
+    border: 1px solid var(--sheet-border);
+
+}
+
+
+/* ========================================
+   CARD BODY
+   ======================================== */
+
+.card-body {
+
+    padding: 14px;
+
+}
+
+
+.name {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+
+.booking-id {
+
+    margin-top: 3px;
+
+    font-family: 'DM Mono', monospace;
+
+    font-size: 10px;
+
+    color: var(--faint);
+
+}
+
+
+/* ========================================
+   MAIN ACTION
+   ======================================== */
+
+.action-box {
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    background: var(--action-bg);
+
+    border: 1px solid var(--action-border);
+
+    border-radius: 12px;
+
+}
+
+
+.action-label {
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+
+    color: var(--action-text);
+
+}
+
+
+.action-value {
+
+    margin-top: 4px;
+
+    font-size: 24px;
+
+    line-height: 1;
+
+    font-weight: 600;
+
+    color: #8B4800;
+
+}
+
+
+/* ========================================
+   LOCATION DETAILS
+   ======================================== */
+
+.details {
+
+    margin-top: 10px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+}
+
+
+.detail {
+
+    padding: 10px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    background: #fff;
+
+}
+
+
+.detail.full {
+
+    grid-column: 1 / -1;
+
+}
+
+
+.detail-label {
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+
+    color: var(--faint);
+
+    font-weight: 600;
+
+}
+
+
+.detail-value {
+
+    margin-top: 4px;
+
+    font-family: 'DM Mono', monospace;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: var(--text);
+
+}
+
+
+/* ========================================
+   SHEET VALUE
+   ======================================== */
+
+.sheet-value {
+
+    color: var(--sheet-text);
+
+    background: var(--sheet-bg);
+
+    border: 1px solid var(--sheet-border);
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    display: inline-block;
+
+}
+
+
+/* ========================================
+   SLOT VALUE
+   ======================================== */
+
+.slot-value {
+
+    color: var(--slot-text);
+
+    background: var(--slot-bg);
+
+    border: 1px solid var(--slot-border);
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    display: inline-block;
+
+}
+
+
+/* ========================================
+   STAFF INSTRUCTION
+   ======================================== */
+
+.how-to {
+
+    margin-top: 12px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid var(--border);
+
+}
+
+
+.how-to-title {
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.how-to-text {
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    color: var(--muted);
+
+}
+
+
+.how-to-text strong {
+
+    color: var(--text);
+
+}
+
+
+/* ========================================
+   COMMENT
+   ======================================== */
+
+.comment {
+
+    margin-top: 10px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid var(--border);
+
+    font-size: 12px;
+
+    color: var(--muted);
+
+}
+
+
+/* ========================================
+   STATE
+   ======================================== */
+
+.state {
+
+    padding: 80px 24px;
+
+    text-align: center;
+
+}
+
+
+.state-title {
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+
+.state-sub {
+
+    margin-top: 8px;
+
+    font-size: 13px;
+
+    color: var(--muted);
+
+}
+
+
+/* ========================================
+   LOADING
+   ======================================== */
+
+.loading {
+
+    min-height: 60vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+}
+
+
+.loading::after {
+
+    content: "";
+
+    display: inline-block;
+
+    width: 14px;
+
+    height: 14px;
+
+    margin-left: 8px;
+
+    vertical-align: -2px;
+
+    border: 2px solid #D8D6D0;
+
+    border-top-color: var(--accent);
+
+    border-radius: 50%;
+
+    animation: spin .8s linear infinite;
+
+}
+
+
+@keyframes spin {
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+/* ========================================
+   SMALL SCREEN
+   ======================================== */
+
+@media (max-width: 420px) {
+
+    .details {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .detail.full {
+
+        grid-column: auto;
+
+    }
+
+    .card-header-right {
+
+        flex-direction: column;
+
+        align-items: flex-end;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     HEADER
+     ======================================== -->
+
+<header>
+
+    <div class="hdr-row">
+
+        <div>
+
+            <div class="hdr-title">
+                EVG GRG Staff
+            </div>
+
+            <div class="hdr-valid">
+                Manual availability updates
+            </div>
+
+        </div>
+
+
+        <div class="hdr-controls">
+
+            <button
+                class="refresh-btn"
+                id="refreshBtn"
+                type="button">
+                ↻
+            </button>
+
+
+            <div
+                class="badge"
+                id="count">
+                0 📋
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ========================================
+     INSTRUCTION LIST
+     ======================================== -->
+
+<div
+    class="list"
+    id="instructionList">
+
+    <div class="loading">
+        Loading instructions
+    </div>
+
+</div>
+
+
+<script>
+
+/* ========================================
+   CONFIGURATION
+   ======================================== */
+
+const GAS_DEPLOYMENT_ID =
+    "AKfycbz-vj7FoO24w22zVPoWczaR-4tmcHJcRGgS6hIxnFaxHkkCWOzG870apNPawsvnZp7q";
+
+
+const GAS_URL =
+    `https://script.google.com/macros/s/${GAS_DEPLOYMENT_ID}/exec`;
+
+
+/* ========================================
+   STATE
+   ======================================== */
+
+let allInstructions = [];
+
+let sortOrder = "asc";
+
+
+/* ========================================
+   SAFE STRING
+   ======================================== */
+
+function safeString(value) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+        return "";
+    }
+
+    return String(value).trim();
+
+}
+
+
+/* ========================================
+   FORMAT DATE
+   ======================================== */
+
+function formatDate(value) {
+
+    if (!value) return "";
+
+    const parts =
+        String(value).split("/");
+
+    if (parts.length !== 3) {
+        return safeString(value);
+    }
+
+    const year =
+        Number(parts[0]);
+
+    const month =
+        Number(parts[1]) - 1;
+
+    const day =
+        Number(parts[2]);
+
+
+    const d =
+        new Date(
+            year,
+            month,
+            day
+        );
+
+
+    if (isNaN(d.getTime())) {
+        return safeString(value);
+    }
+
+
+    return d.toLocaleDateString(
+        "en-ZA",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* ========================================
+   ESCAPE HTML
+   ======================================== */
+
+function escapeHtml(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ========================================
+   RENDER
+   ======================================== */
+
+function renderInstructions(instructions) {
+
+    return instructions.map(function(item) {
+
+        const instruction =
+            item.instruction || {};
+
+
+        const sheet =
+            safeString(instruction.sheet);
+
+
+        const day =
+            safeString(instruction.day);
+
+
+        const dayName =
+            safeString(instruction.dayName);
+
+
+        const slot =
+            safeString(instruction.slot);
+
+
+        const amount =
+            Number(instruction.amount || 1);
+
+
+        const action =
+            safeString(instruction.action)
+                .toUpperCase();
+
+
+        return `
+
+        <div class="instruction-card">
+
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-date">
+                        ${escapeHtml(
+                            formatDate(item.date)
+                        )}
+                    </div>
+
+                    <div class="card-time">
+                        ${escapeHtml(dayName)}
+                        ·
+                        ${escapeHtml(slot)}
+                    </div>
+
+                </div>
+
+
+                <div class="card-header-right">
+
+                    <span class="tag">
+                        ACTION
+                    </span>
+
+                    <span class="type-tag">
+                        GRG
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+
+                <div class="name">
+                    ${escapeHtml(item.name)}
+                </div>
+
+
+                <div class="booking-id">
+                    ${escapeHtml(item.bookingId)}
+                </div>
+
+
+                <div class="action-box">
+
+                    <div class="action-label">
+                        Staff action
+                    </div>
+
+                    <div class="action-value">
+                        ${escapeHtml(action)}
+                        ${escapeHtml(amount)}
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+
+                    <div class="detail full">
+
+                        <div class="detail-label">
+                            Sheet
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span class="sheet-value">
+                                ${escapeHtml(sheet)}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Day
+                        </div>
+
+                        <div class="detail-value">
+                            ${escapeHtml(day)}
+                            ·
+                            ${escapeHtml(dayName)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Slot
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span class="slot-value">
+                                ${escapeHtml(slot)}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="how-to">
+
+                    <div class="how-to-title">
+                        What to do
+                    </div>
+
+                    <div class="how-to-text">
+
+                        Open sheet
+                        <strong>${escapeHtml(sheet)}</strong>,
+                        find
+                        <strong>Day ${escapeHtml(day)}</strong>,
+                        then find the
+                        <strong>${escapeHtml(slot)}</strong>
+                        cell and
+                        <strong>${escapeHtml(action.toLowerCase())} ${escapeHtml(amount)}</strong>.
+
+                    </div>
+
+                </div>
+
+
+                ${
+                    item.comment
+                        ? `
+
+                        <div class="comment">
+
+                            ${escapeHtml(item.comment)}
+
+                        </div>
+
+                        `
+                        : ""
+                }
+
+
+            </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* ========================================
+   UPDATE DISPLAY
+   ======================================== */
+
+function updateDisplay() {
+
+    const container =
+        document.getElementById(
+            "instructionList"
+        );
+
+
+    if (
+        !allInstructions ||
+        allInstructions.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="state">
+
+                <div class="state-title">
+                    No actions required
+                </div>
+
+                <div class="state-sub">
+                    There are currently no approved
+                    GRG bookings requiring a manual update.
+                </div>
+
+            </div>
+
+        `;
+
+        updateCount();
+
+        return;
+
+    }
+
+
+    const sorted =
+        [...allInstructions].sort(
+            function(a, b) {
+
+                const dateA =
+                    safeString(a.date);
+
+                const dateB =
+                    safeString(b.date);
+
+
+                const dateCompare =
+                    dateA.localeCompare(
+                        dateB
+                    );
+
+
+                if (dateCompare !== 0) {
+
+                    return sortOrder === "asc"
+                        ? dateCompare
+                        : -dateCompare;
+
+                }
+
+
+                return safeString(a.slot)
+                    .localeCompare(
+                        safeString(b.slot)
+                    );
+
+            }
+        );
+
+
+    container.innerHTML =
+        renderInstructions(sorted);
+
+
+    updateCount();
+
+}
+
+
+/* ========================================
+   COUNT
+   ======================================== */
+
+function updateCount() {
+
+    document.getElementById(
+        "count"
+    ).textContent =
+        allInstructions.length +
+        " 📋";
+
+}
+
+
+/* ========================================
+   LOAD
+   ======================================== */
+
+function loadStaffData() {
+
+    const container =
+        document.getElementById(
+            "instructionList"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="loading">
+            Loading instructions
+        </div>
+
+    `;
+
+
+    fetch(
+        GAS_URL +
+        "?action=staffData"
+    )
+
+
+    .then(function(response) {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " + response.status
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+
+    .then(function(text) {
+
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(text);
+
+        } catch (err) {
+
+            console.error(
+                "Non JSON response:",
+                text
+            );
+
+            throw new Error(
+                "Invalid response from server"
+            );
+
+        }
+
+
+        if (data.error) {
+
+            throw new Error(
+                data.error
+            );
+
+        }
+
+
+        allInstructions =
+            data.instructions || [];
+
+
+        updateDisplay();
+
+    })
+
+
+    .catch(function(err) {
+
+        console.error(
+            "Staff dashboard error:",
+            err
+        );
+
+
+        container.innerHTML = `
+
+            <div class="state">
+
+                <div class="state-title">
+                    Unable to load instructions
+                </div>
+
+                <div class="state-sub">
+                    ${escapeHtml(err.message)}
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/* ========================================
+   REFRESH
+   ======================================== */
+
+document.getElementById(
+    "refreshBtn"
+).addEventListener(
+    "click",
+    function() {
+
+        loadStaffData();
+
+    }
+);
+
+
+/* ========================================
+   INITIALIZE
+   ======================================== */
+
+loadStaffData();
+
+</script>
+
+
+</body>
+
+</html>
